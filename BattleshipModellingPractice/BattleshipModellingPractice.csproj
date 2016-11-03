@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums.cs" />
+    <Compile Include="Objects\GameBoard.cs" />
+    <Compile Include="Objects\Panel.cs" />
+    <Compile Include="Objects\Player.cs" />
+    <Compile Include="Objects\Ship.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
