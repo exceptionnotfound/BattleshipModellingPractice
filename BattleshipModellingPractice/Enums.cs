@@ -31,16 +31,7 @@ namespace BattleshipModellingPractice
         Hit,
 
         [Description("M")]
-        Miss,
-
-        [Description("W")]
-        Excluded
-    }
-
-    public enum LastTurnResult
-    {
-        Miss,
-        Hit
+        Miss
     }
 
     public enum ShotResult

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace BattleshipModellingPractice.Objects.Boards
 {
+    /// <summary>
+    /// The basic class for this modelling practice.  Represents a single square on the game board.
+    /// </summary>
     public class Panel
     {
         public OccupationType OccupationType { get; set; }
@@ -16,6 +19,7 @@ namespace BattleshipModellingPractice.Objects.Boards
         public Panel(int row, int column)
         {
             Coordinates = new Coordinates(row, column);
+            OccupationType = OccupationType.Empty;
         }
 
         public string Status

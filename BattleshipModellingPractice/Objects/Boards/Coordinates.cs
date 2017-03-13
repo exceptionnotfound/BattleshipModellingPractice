@@ -11,14 +11,6 @@ namespace BattleshipModellingPractice.Objects.Boards
         public int Row { get; set; }
         public int Column { get; set; }
 
-        public int PanelID
-        {
-            get
-            {
-                return Row * Column;
-            }
-        }
-
         public Coordinates(int row, int column)
         {
             Row = row;

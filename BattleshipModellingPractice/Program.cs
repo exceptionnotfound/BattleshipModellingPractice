@@ -1,4 +1,5 @@
 ﻿using BattleshipModellingPractice.Objects;
+using BattleshipModellingPractice.Objects.Games;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,42 +12,29 @@ namespace BattleshipModellingPractice
     {
         static void Main(string[] args)
         {
-            Player player1 = new Player("Player1");
-            Player player2 = new Player("Player2");
+            int player1Wins = 0, player2Wins = 0;
 
-            player1.PlaceShips();
-            player2.PlaceShips();
+            Console.WriteLine("How many games do you want to play?");
+            var numGames = int.Parse(Console.ReadLine());
 
-            player1.OutputBoards();
-            player2.OutputBoards();
-
-            while(!player1.HasLost && !player2.HasLost)
+            for (int i = 0; i < numGames; i++)
             {
-                var coordinates = player1.FireShot();
-                var result = player2.ProcessShot(coordinates);
-                player1.ProcessResult(coordinates, result);
-                
-                if(!player2.HasLost) //If player 2 already lost, we can't let them take another turn.
+                Game game1 = new Game();
+                game1.PlayToEnd();
+                if(game1.Player1.HasLost)
                 {
-                    coordinates = player2.FireShot();
-                    result = player1.ProcessShot(coordinates);
-                    player2.ProcessResult(coordinates, result);
+                    player2Wins++;
+                }
+                else
+                {
+                    player1Wins++;
                 }
             }
 
-            player1.OutputBoards();
-            player2.OutputBoards();
-
-            if(player1.HasLost)
-            {
-                Console.WriteLine(player2.Name + " has won the game!");
-            }
-            else if(player2.HasLost)
-            {
-                Console.WriteLine(player1.Name + " has won the game!");
-            }
-
+            Console.WriteLine("Player 1 Wins: " + player1Wins.ToString());
+            Console.WriteLine("Player 2 Wins: " + player2Wins.ToString());
             Console.ReadLine();
+           
         }
     }
 }

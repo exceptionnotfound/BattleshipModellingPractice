@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BattleshipModellingPractice.Objects
 {
+    /// <summary>
+    /// Represents a player's ship as placed on their Game Board.
+    /// </summary>
     public abstract class Ship
     {
         public string Name { get; set; }

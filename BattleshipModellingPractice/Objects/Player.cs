@@ -12,10 +12,9 @@ namespace BattleshipModellingPractice.Objects
     public class Player
     {
         public string Name { get; set; }
-        public PlayerBoard OwnBoard { get; set; }
+        public GameBoard PlayerBoard { get; set; }
         public FiringBoard FiringBoard { get; set; }
         public List<Ship> Ships { get; set; }
-        public ShotResult LastTurnResult { get; set; }
         public bool HasLost
         {
             get
@@ -35,7 +34,7 @@ namespace BattleshipModellingPractice.Objects
                 new Battleship(),
                 new Carrier()
             };
-            OwnBoard = new PlayerBoard();
+            PlayerBoard = new GameBoard();
             FiringBoard = new FiringBoard();
         }
 
@@ -47,7 +46,7 @@ namespace BattleshipModellingPractice.Objects
             {
                 for(int ownColumn = 1; ownColumn <= 10; ownColumn++)
                 {
-                    Console.Write(OwnBoard.Panels.At(row, ownColumn).Status + " ");
+                    Console.Write(PlayerBoard.Panels.At(row, ownColumn).Status + " ");
                 }
                 Console.Write("                ");
                 for (int firingColumn = 1; firingColumn <= 10; firingColumn++)
@@ -101,7 +100,7 @@ namespace BattleshipModellingPractice.Objects
                     }
 
                     //Check if specified panels are occupied
-                    var affectedPanels = OwnBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
+                    var affectedPanels = PlayerBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
                     if(affectedPanels.Any(x=>x.IsOccupied))
                     {
                         isOpen = true;
@@ -119,22 +118,23 @@ namespace BattleshipModellingPractice.Objects
 
         public Coordinates FireShot()
         {
+            //If there are hits on the board with neighbors which don't have shots, we should fire at those first.
             var hitNeighbors = FiringBoard.GetHitNeighbors();
             Coordinates coords;
             if (hitNeighbors.Any())
             {
-                coords = FireSearchingShot();
+                coords = SearchingShot();
             }
             else
             {
-                coords = FireRandomShot();
+                coords = RandomShot();
             }
             Console.WriteLine(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
             return coords;
         }
 
 
-        private Coordinates FireRandomShot()
+        private Coordinates RandomShot()
         {
             var availablePanels = FiringBoard.GetOpenRandomPanels();
             Random rand = new Random(Guid.NewGuid().GetHashCode());
@@ -142,7 +142,7 @@ namespace BattleshipModellingPractice.Objects
             return availablePanels[panelID];
         }
 
-        private Coordinates FireSearchingShot()
+        private Coordinates SearchingShot()
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
             var hitNeighbors = FiringBoard.GetHitNeighbors();
@@ -152,7 +152,7 @@ namespace BattleshipModellingPractice.Objects
 
         public ShotResult ProcessShot(Coordinates coords)
         {
-            var panel = OwnBoard.Panels.At(coords.Row, coords.Column);
+            var panel = PlayerBoard.Panels.At(coords.Row, coords.Column);
             if(!panel.IsOccupied)
             {
                 Console.WriteLine(Name + " says: \"Miss!\"");
@@ -168,9 +168,8 @@ namespace BattleshipModellingPractice.Objects
             return ShotResult.Hit;
         }
 
-        public void ProcessResult(Coordinates coords, ShotResult result)
+        public void ProcessShotResult(Coordinates coords, ShotResult result)
         {
-            LastTurnResult = result;
             var panel = FiringBoard.Panels.At(coords.Row, coords.Column);
             switch(result)
             {
@@ -182,8 +181,6 @@ namespace BattleshipModellingPractice.Objects
                     panel.OccupationType = OccupationType.Miss;
                     break;
             }
-
-            FiringBoard.MarkExcludedPanels();
         }
     }
 }

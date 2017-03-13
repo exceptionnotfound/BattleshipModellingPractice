@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BattleshipModellingPractice.Objects.Boards
 {
+    /// <summary>
+    /// Represents a collection of Panels to provide a Player with their Game Board (e.g. where their ships are placed).
+    /// </summary>
     public class GameBoard
     {
         public List<Panel> Panels { get; set; }
@@ -21,35 +24,6 @@ namespace BattleshipModellingPractice.Objects.Boards
                     Panels.Add(new Panel(i, j));
                 }
             }
-        }
-
-        public bool IsEmpty(int row, int column)
-        {
-            return Panels.At(row, column).OccupationType == OccupationType.Empty;
-        }
-
-        public List<Panel> GetNeighbors(Coordinates coordinates)
-        {
-            int row = coordinates.Row;
-            int column = coordinates.Column;
-            List<Panel> panels = new List<Panel>();
-            if (column > 1)
-            {
-                panels.Add(Panels.At(row, column - 1));
-            }
-            if (row > 1)
-            {
-                panels.Add(Panels.At(row - 1, column));
-            }
-            if (row < 10)
-            {
-                panels.Add(Panels.At(row + 1, column));
-            }
-            if (column < 10)
-            {
-                panels.Add(Panels.At(row, column + 1));
-            }
-            return panels;
         }
     }
 }
