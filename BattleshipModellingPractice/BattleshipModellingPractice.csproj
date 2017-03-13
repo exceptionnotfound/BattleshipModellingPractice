@@ -46,7 +46,9 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\PanelExtensions.cs" />
+    <Compile Include="Objects\Boards\Coordinates.cs" />
     <Compile Include="Objects\Boards\FiringBoard.cs" />
+    <Compile Include="Objects\Boards\GameBoard.cs" />
     <Compile Include="Objects\Boards\PlayerBoard.cs" />
     <Compile Include="Objects\Boards\Panel.cs" />
     <Compile Include="Objects\Player.cs" />

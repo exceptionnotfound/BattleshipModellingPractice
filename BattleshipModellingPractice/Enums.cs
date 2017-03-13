@@ -12,9 +12,6 @@ namespace BattleshipModellingPractice
         [Description("o")]
         Empty,
 
-        [Description("X")]
-        ShotFired,
-
         [Description("B")]
         Battleship,
 
@@ -30,7 +27,25 @@ namespace BattleshipModellingPractice
         [Description("A")]
         Carrier,
 
-        [Description("H")]
+        [Description("X")]
+        Hit,
+
+        [Description("M")]
+        Miss,
+
+        [Description("W")]
+        Excluded
+    }
+
+    public enum LastTurnResult
+    {
+        Miss,
+        Hit
+    }
+
+    public enum ShotResult
+    {
+        Miss,
         Hit
     }
 }

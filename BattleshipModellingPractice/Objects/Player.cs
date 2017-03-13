@@ -15,6 +15,14 @@ namespace BattleshipModellingPractice.Objects
         public PlayerBoard OwnBoard { get; set; }
         public FiringBoard FiringBoard { get; set; }
         public List<Ship> Ships { get; set; }
+        public ShotResult LastTurnResult { get; set; }
+        public bool HasLost
+        {
+            get
+            {
+                return Ships.All(x => x.IsSunk);
+            }
+        }
 
         public Player(string name)
         {
@@ -33,7 +41,8 @@ namespace BattleshipModellingPractice.Objects
 
         public void OutputBoards()
         {
-            Console.WriteLine(Name + "'s Own Board:                " + Name + "'s Firing Board:");
+            Console.WriteLine(Name);
+            Console.WriteLine("Own Board:                          Firing Board:");
             for(int row = 1; row <= 10; row++)
             {
                 for(int ownColumn = 1; ownColumn <= 10; ownColumn++)
@@ -63,10 +72,10 @@ namespace BattleshipModellingPractice.Objects
                 bool isOpen = true;
                 while (isOpen)
                 {
-                    var startcolumn = rand.Next(1,10);
-                    var startrow = rand.Next(1, 10);
+                    var startcolumn = rand.Next(1,11);
+                    var startrow = rand.Next(1, 11);
                     int endrow = startrow, endcolumn = startcolumn;
-                    var orientation = rand.Next(1, 100) % 2; //0 for Horizontal
+                    var orientation = rand.Next(1, 101) % 2; //0 for Horizontal
 
                     List<int> panelNumbers = new List<int>();
                     if (orientation == 0)
@@ -84,6 +93,7 @@ namespace BattleshipModellingPractice.Objects
                         }
                     }
 
+                    //We cannot place ships beyond the boundaries of the board
                     if(endrow < 1 || endrow > 10 || endcolumn < 1 || endcolumn > 10)
                     {
                         isOpen = true;
@@ -105,6 +115,75 @@ namespace BattleshipModellingPractice.Objects
                     isOpen = false;
                 }
             }
+        }
+
+        public Coordinates FireShot()
+        {
+            var hitNeighbors = FiringBoard.GetHitNeighbors();
+            Coordinates coords;
+            if (hitNeighbors.Any())
+            {
+                coords = FireSearchingShot();
+            }
+            else
+            {
+                coords = FireRandomShot();
+            }
+            Console.WriteLine(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
+            return coords;
+        }
+
+
+        private Coordinates FireRandomShot()
+        {
+            var availablePanels = FiringBoard.GetOpenRandomPanels();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            var panelID = rand.Next(availablePanels.Count);
+            return availablePanels[panelID];
+        }
+
+        private Coordinates FireSearchingShot()
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            var hitNeighbors = FiringBoard.GetHitNeighbors();
+            var neighborID = rand.Next(hitNeighbors.Count);
+            return hitNeighbors[neighborID];
+        }
+
+        public ShotResult ProcessShot(Coordinates coords)
+        {
+            var panel = OwnBoard.Panels.At(coords.Row, coords.Column);
+            if(!panel.IsOccupied)
+            {
+                Console.WriteLine(Name + " says: \"Miss!\"");
+                return ShotResult.Miss;
+            }
+            var ship = Ships.First(x => x.OccupationType == panel.OccupationType);
+            ship.Hits++;
+            Console.WriteLine(Name + " says: \"Hit!\"");
+            if (ship.IsSunk)
+            {
+                Console.WriteLine(Name + " says: \"You sunk my " + ship.Name + "!\"");
+            }
+            return ShotResult.Hit;
+        }
+
+        public void ProcessResult(Coordinates coords, ShotResult result)
+        {
+            LastTurnResult = result;
+            var panel = FiringBoard.Panels.At(coords.Row, coords.Column);
+            switch(result)
+            {
+                case ShotResult.Hit:
+                    panel.OccupationType = OccupationType.Hit;
+                    break;
+
+                default:
+                    panel.OccupationType = OccupationType.Miss;
+                    break;
+            }
+
+            FiringBoard.MarkExcludedPanels();
         }
     }
 }

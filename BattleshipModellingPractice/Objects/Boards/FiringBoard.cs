@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BattleshipModellingPractice.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,20 +7,35 @@ using System.Threading.Tasks;
 
 namespace BattleshipModellingPractice.Objects.Boards
 {
-    public class FiringBoard
+    public class FiringBoard : GameBoard
     {
-        public List<Panel> Panels { get; set; }
-
-        public FiringBoard()
+        public void MarkExcludedPanels()
         {
-            Panels = new List<Panel>();
-            for (int i = 1; i <= 10; i++)
+            var panels = Panels.Where(x => x.OccupationType == OccupationType.Empty);
+            foreach (var panel in panels)
             {
-                for (int j = 1; j <= 10; j++)
+                var neighbors = GetNeighbors(panel.Coordinates);
+                if (neighbors.All(x => x.OccupationType == OccupationType.Miss))
                 {
-                    Panels.Add(new Panel(i, j));
+                    panel.OccupationType = OccupationType.Excluded;
                 }
             }
+        }
+
+        public List<Coordinates> GetOpenRandomPanels()
+        {
+            return Panels.Where(x => x.OccupationType == OccupationType.Empty && x.IsRandomAvailable).Select(x=>x.Coordinates).ToList();
+        }
+
+        public List<Coordinates> GetHitNeighbors()
+        {
+            List<Panel> panels = new List<Panel>();
+            var hits = Panels.Where(x => x.OccupationType == OccupationType.Hit);
+            foreach(var hit in hits)
+            {
+                panels.AddRange(GetNeighbors(hit.Coordinates).ToList());
+            }
+            return panels.Distinct().Where(x => x.OccupationType == OccupationType.Empty).Select(x => x.Coordinates).ToList();
         }
     }
 }

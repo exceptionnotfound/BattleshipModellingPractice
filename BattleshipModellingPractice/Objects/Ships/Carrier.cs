@@ -10,6 +10,7 @@ namespace BattleshipModellingPractice.Objects.Ships
     {
         public Carrier()
         {
+            Name = "Aircraft Carrier";
             Width = 5;
             OccupationType = OccupationType.Carrier;
         }

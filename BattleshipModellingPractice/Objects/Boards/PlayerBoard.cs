@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleshipModellingPractice.Objects.Boards
 {
-    public class PlayerBoard : FiringBoard
+    public class PlayerBoard : GameBoard
     {
     }
 }

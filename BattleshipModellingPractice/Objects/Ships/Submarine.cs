@@ -10,6 +10,7 @@ namespace BattleshipModellingPractice.Objects.Ships
     {
         public Submarine()
         {
+            Name = "Submarine";
             Width = 3;
             OccupationType = OccupationType.Submarine;
         }

@@ -11,12 +11,15 @@ namespace BattleshipModellingPractice.Extensions
     {
         public static Panel At(this List<Panel> panels, int row, int column)
         {
-            return panels.Where(x => x.RowID == row && x.ColumnID == column).First();
+            return panels.Where(x => x.Coordinates.Row == row && x.Coordinates.Column == column).First();
         }
 
         public static List<Panel> Range(this List<Panel> panels, int startRow, int startColumn, int endRow, int endColumn)
         {
-            return panels.Where(x => x.RowID >= startRow && x.ColumnID >= startColumn && x.RowID <= endRow && x.ColumnID <= endColumn).ToList();
+            return panels.Where(x => x.Coordinates.Row >= startRow 
+                                     && x.Coordinates.Column >= startColumn 
+                                     && x.Coordinates.Row <= endRow 
+                                     && x.Coordinates.Column <= endColumn).ToList();
         }
     }
 }
