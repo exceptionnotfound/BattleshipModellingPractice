@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipModellingPractice.Objects
+namespace BattleshipModellingPractice.Objects.Boards
 {
-    public class Ship
+    public class PlayerBoard : FiringBoard
     {
-        public ShipType ShipType { get; set; }
     }
 }
