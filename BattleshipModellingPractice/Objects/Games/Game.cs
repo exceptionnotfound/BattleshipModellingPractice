@@ -13,8 +13,8 @@ namespace BattleshipModellingPractice.Objects.Games
 
         public Game()
         {
-            Player1 = new Player("Player1");
-            Player2 = new Player("Player2");
+            Player1 = new Player("Amy");
+            Player2 = new Player("Vince");
 
             Player1.PlaceShips();
             Player2.PlaceShips();

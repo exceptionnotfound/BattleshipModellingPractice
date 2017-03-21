@@ -21,7 +21,7 @@ namespace BattleshipModellingPractice
         [Description("D")]
         Destroyer,
 
-        [Description("U")]
+        [Description("S")]
         Submarine,
 
         [Description("A")]

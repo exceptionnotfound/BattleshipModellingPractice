@@ -12,7 +12,7 @@ namespace BattleshipModellingPractice.Objects
     public class Player
     {
         public string Name { get; set; }
-        public GameBoard PlayerBoard { get; set; }
+        public GameBoard GameBoard { get; set; }
         public FiringBoard FiringBoard { get; set; }
         public List<Ship> Ships { get; set; }
         public bool HasLost
@@ -34,7 +34,7 @@ namespace BattleshipModellingPractice.Objects
                 new Battleship(),
                 new Carrier()
             };
-            PlayerBoard = new GameBoard();
+            GameBoard = new GameBoard();
             FiringBoard = new FiringBoard();
         }
 
@@ -46,7 +46,7 @@ namespace BattleshipModellingPractice.Objects
             {
                 for(int ownColumn = 1; ownColumn <= 10; ownColumn++)
                 {
-                    Console.Write(PlayerBoard.Panels.At(row, ownColumn).Status + " ");
+                    Console.Write(GameBoard.Panels.At(row, ownColumn).Status + " ");
                 }
                 Console.Write("                ");
                 for (int firingColumn = 1; firingColumn <= 10; firingColumn++)
@@ -93,14 +93,14 @@ namespace BattleshipModellingPractice.Objects
                     }
 
                     //We cannot place ships beyond the boundaries of the board
-                    if(endrow < 1 || endrow > 10 || endcolumn < 1 || endcolumn > 10)
+                    if(endrow > 10 || endcolumn > 10)
                     {
                         isOpen = true;
                         continue;
                     }
 
                     //Check if specified panels are occupied
-                    var affectedPanels = PlayerBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
+                    var affectedPanels = GameBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
                     if(affectedPanels.Any(x=>x.IsOccupied))
                     {
                         isOpen = true;
@@ -152,7 +152,7 @@ namespace BattleshipModellingPractice.Objects
 
         public ShotResult ProcessShot(Coordinates coords)
         {
-            var panel = PlayerBoard.Panels.At(coords.Row, coords.Column);
+            var panel = GameBoard.Panels.At(coords.Row, coords.Column);
             if(!panel.IsOccupied)
             {
                 Console.WriteLine(Name + " says: \"Miss!\"");
