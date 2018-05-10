@@ -1,6 +1,6 @@
 # BattleshipModellingPractice
 
-As part of my [Modeling Practice](https://exceptionnotfound.net/tag/modeling-practice/), this project is intended to model the board game Battleship as a C# program.
+As part of my [Modeling Practice](https://exceptionnotfound.net/tag/modeling-practice/) series, this project is intended to model the board game Battleship as a C# program.
 
 You can read more about it on my blog:
 
